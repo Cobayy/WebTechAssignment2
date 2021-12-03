@@ -15,11 +15,17 @@ function createSingleIndex() {
 
     elementA.appendChild(elementDiv);
     elementA.href = 'page3.html';
-    elementP.appendChild(contact.name);
+    elementP.appendChild(contactList.name);
     elementDiv.appendChild(elementP);
     elementDiv.classList.add('contact');
 
     main[0].appendChild(elementA)
+
+    elementA.addEventListener("click", function(event) {
+        event.preventDefault();
+        cleanUpIndex();
+        renderView(contact);
+    });
 };
 
 
@@ -268,4 +274,41 @@ function renderCreate(contact) {
 
     main[0].appendChild(contactEdit);
 }
+
+
+
+const contactsHome = document.querySelector("#contactshome")
+contactsHome.addEventListener("click", function (event) {
+    let editPage = document.querySelectorAll(".contactedit");
+    let infoPage = document.querySelectorAll(".contactinfo");
+    let mainPage = document.querySelectorAll(".contact");
+    if (editPage.length != 0) {
+        cleanUpCreate();
+    } else if (infoPage.length != 0) {
+        cleanUpView();
+    } else if (mainPage.length != 0) {
+        cleanUpIndex();
+    }
+    renderIndex(contactList)
+    event.preventDefault()
+});
+
+
+
+const newContact = document.querySelector("#newcontact")
+newContact.addEventListener("click", function (event) {
+    let editPage = document.querySelectorAll(".contactedit");
+    let infoPage = document.querySelectorAll(".contactinfo");
+    let mainPage = document.querySelectorAll(".contact");
+    if (editPage.length != 0) {
+        cleanUpCreate();
+    } else if (infoPage.length != 0) {
+        cleanUpView();
+    } else if (mainPage.length != 0) {
+        cleanUpIndex();
+    }
+    renderCreate(contactList)
+    event.preventDefault()
+});
+
 
