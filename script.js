@@ -7,7 +7,7 @@ function cleanUpIndex() {
 };
 
 
-function createSingleIndex() {
+function createSingleIndex(contactList) {
     let main = document.querySelectorAll('.main');
     let elementA = document.createElement('a');
     let elementDiv = document.createElement('div');
@@ -24,7 +24,7 @@ function createSingleIndex() {
     elementA.addEventListener("click", function(event) {
         event.preventDefault();
         cleanUpIndex();
-        renderView(contact);
+        renderView(contactList);
     });
 };
 
@@ -45,7 +45,7 @@ let contactList = [
 ];
 
 
-function renderIndex(contact) {
+function renderIndex(contactList) {
     let main = document.querySelectorAll('.main');
        
     for (let i = 0; i < contactList.length; i++) {
@@ -69,11 +69,13 @@ function renderIndex(contact) {
 
 function cleanUpView() {
     let contactinfo = document.querySelectorAll('.contactinfo');
-    contactinfo[0].remove();    
+    for (let i = 0; i < contactinfo.length; i++) {
+        contactinfo[i].remove();
+    }
 }
 
 
-function renderView(contact) {
+function renderView(contactList) {
     let main = document.querySelectorAll('.main')[0];
     let divInfo = document.createElement('div');
     let divName = document.createElement('div');
@@ -91,7 +93,7 @@ function renderView(contact) {
     divImg.alt = 'Profile Picture';
 
 
-    divName.append(contact.name);
+    divName.append(contactList.name);
     divName.classList.add('contactname');
 
 
@@ -103,22 +105,21 @@ function renderView(contact) {
     main.appendChild(divInfo);
 
 
-    divEmail.append('email: ', contact.email);
+    divEmail.append('email: ', contactList.email);
     divEmail.classList.add('contactemail');
 
 
     divInfo.appendChild(divEmail);
 
 
-    divPhone.append('cell: ', contact.phone);
+    divPhone.append('cell: ', contactList.phone);
     divPhone.classList.add('contactphone');
 
 
     divInfo.appendChild(divPhone);
 
     
-    divAddress.append('address: ', contact .address);
-    divAddress.append('address: ', contact.address);
+    divAddress.append('address: ', contactList.address);
     divAddress.classList.add('contactaddress');
 
 
@@ -141,6 +142,16 @@ function renderView(contact) {
 
 
     divInfo.appendChild(divButtons);
+
+
+    buttonClose.addEventListener("click", function (event) {
+        event.preventDefault();
+        cleanUpView();
+        renderIndex(contactList);
+    });
+        
+    
+
 }
 
 
@@ -152,10 +163,10 @@ function cleanUpCreate() {
 
 
 
-function renderCreate(contact) {
+function renderCreate(contactList) {
     let main = document.querySelectorAll(".main")
-    let contactEdit = document.createElement("div");
 
+    let contactEdit = document.createElement("div");
     contactEdit.classList.add("contactedit")
 
     let contactImg = document.createElement("div");
@@ -273,6 +284,30 @@ function renderCreate(contact) {
     contactEdit.appendChild(form);
 
     main[0].appendChild(contactEdit);
+
+    buttonCancel.addEventListener("click", function (event) {
+        event.preventDefault();
+        cleanUpCreate();
+        renderIndex(contactList);
+    });
+
+    buttonSave.addEventListener("click", function(event) {
+        event.preventDefault();
+        let userForm = document.querySelector("form");
+        let formName = myForm.elements[0].value;
+        let formPhone = myForm.elements[2].value;
+        let formAddress = myForm.elements[4].value;
+        let formEmail = myForm.elements[6].value;
+        let userInfo = {
+          Name: formName,
+          Phone: formPhone,
+          Address: formAddress,
+          Email: formEmail,
+        };
+        contactList.push(userInfo)
+        cleanUpCreate()
+        renderView(contactList)
+    });
 }
 
 
@@ -289,8 +324,8 @@ contactsHome.addEventListener("click", function (event) {
     } else if (mainPage.length != 0) {
         cleanUpIndex();
     }
-    renderIndex(contactList)
-    event.preventDefault()
+    renderIndex(contactList);
+    event.preventDefault();
 });
 
 
@@ -307,8 +342,10 @@ newContact.addEventListener("click", function (event) {
     } else if (mainPage.length != 0) {
         cleanUpIndex();
     }
-    renderCreate(contactList)
-    event.preventDefault()
+    renderCreate(contactList);
+    event.preventDefault();
 });
 
 
+cleanUpIndex()
+renderIndex(contactList)
